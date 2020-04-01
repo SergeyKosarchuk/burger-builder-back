@@ -54,5 +54,6 @@ const verifyPassword = async (password, hash) => {
 
 export {
   createHashFromPassword,
-  verifyPassword
+  verifyPassword,
+  getRandomString
 };

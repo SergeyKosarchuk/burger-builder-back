@@ -6,16 +6,33 @@ import passportJWT from 'passport-jwt';
 import dotenv from 'dotenv';
 
 import { Users } from './models.js'
+import {
+  createHashFromPassword,
+  verifyPassword,
+  getRandomString
+} from './utils.js';
 
 dotenv.config()
 
 const checkUser = async (username, password, done) => {
-  const user = await Users.findOne({ username: username, password: password});
+  if (username && password) {
+    const user = await Users.findOne({ username: username });
 
-  if (user){
-    return done(null, user);
+    if (user) {
+      const isValidPassword = await verifyPassword(password, user.password);
+
+      if (isValidPassword) {
+        return done(null, user);
+      }
+      return done(null, false);
+    }
+
+    // Same response time for unknown usernames
+    const rand = await getRandomString(32);
+    await verifyPassword('password', rand);
+
+    return done(null, false)
   }
-
   return done(null, false);
 }
 
@@ -24,8 +41,9 @@ const createUser = async (req, res) => {
 
   if ( username && password ) {
     try {
+      const hashedPassword = await createHashFromPassword(password);
       const user = await Users.create([
-        { username: username, password: password }
+        { username: username, password: hashedPassword }
       ])
       return res.json(user);
     }
