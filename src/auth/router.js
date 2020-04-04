@@ -60,7 +60,7 @@ const createUser = async (req, res) => {
 }
 
 const getUserFromJWT = async (token, done) => {
-  const user = await Users.findOne({ _id: token.id });
+  const user = await Users.findOne({ _id: token._id });
 
   if (user){
     return done(null, user);
@@ -102,6 +102,13 @@ router.post(
     const user = req.user;
     const token = createJwtForUser(user);
     return res.json(token)
+  }
+);
+router.get(
+  '/whoami',
+  passport.authenticate('jwt', { session: false }),
+  (req, res) => {
+    return res.json(req.user);
   }
 );
 router.post('/register', createUser);
