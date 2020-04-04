@@ -37,18 +37,22 @@ const checkUser = async (username, password, done) => {
 }
 
 const createUser = async (req, res) => {
-  const { username, password } = req.body;
+  const { username, password, age, email, address } = req.body;
 
   if ( username && password ) {
     try {
       const hashedPassword = await createHashFromPassword(password);
-      const user = await Users.create([
-        { username: username, password: hashedPassword }
-      ])
+      const user = await Users.create({
+        username: username,
+        password: hashedPassword,
+        email: email,
+        age: age,
+        address: address
+      })
       return res.json(user);
     }
     catch (error) {
-      return res.status(400).send(error.errmsg);
+      return res.status(400).send(error);
     }
   }
 
@@ -67,7 +71,9 @@ const getUserFromJWT = async (token, done) => {
 
 const createJwtForUser = (user) => {
   const payload = {
-    id: user._id,
+    _id: user._id,
+    username: user.username,
+    email: user.email,
     iss: process.env.JWT_ISSUER,
     aud: process.env.JWT_AUDIENCE
   };
