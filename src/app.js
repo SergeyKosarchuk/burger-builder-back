@@ -7,6 +7,7 @@ import cors from 'cors';
 
 import authRouter from './auth/router.js';
 import burgerBuilderRouter from './burger-builder/router.js';
+import orderRouter from './orders/router.js';
 
 const app = express();
 app.use(helmet());
@@ -17,5 +18,6 @@ app.use(bodyParser.json());
 app.use(passport.initialize());
 app.use(authRouter);
 app.use(burgerBuilderRouter);
+app.use(orderRouter);
 
 export default app;

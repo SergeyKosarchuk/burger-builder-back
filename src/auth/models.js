@@ -10,11 +10,6 @@ const UserSchema = mongoose.Schema({
     type: String,
     required: true,
   },
-  // email: {
-  //   type: String,
-  //   unique: true,
-  //   required: true
-  // },
   age: Number,
   created: {
     type: Date,
@@ -30,4 +25,4 @@ UserSchema.set('toJSON', { versionKey: false, transform: (doc, ret, options) => 
 
 const Users = mongoose.model('Users', UserSchema, 'Users');
 
-export { Users };
+export { Users, UserSchema };

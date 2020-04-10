@@ -32,4 +32,4 @@ const BurgerSchema = mongoose.Schema({
 const Ingredients = mongoose.model('Ingredients', IngredientSchema, 'Ingredients');
 const Burgers = mongoose.model('Burgers', BurgerSchema, 'Burgers');
 
-export { Ingredients, Burgers };
+export { Ingredients, Burgers, BurgerSchema, IngredientSchema };
