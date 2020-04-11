@@ -24,7 +24,10 @@ const BurgerSchema = mongoose.Schema({
     type: Number,
     required: true,
   },
-  ingredients: [IngredientSchema],
+  ingredients: {
+    type: [IngredientSchema],
+    excludeIndexes: true
+  },
 }, {
   timestamps: true,
 });

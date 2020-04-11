@@ -4,8 +4,14 @@ import { UserSchema } from './../auth/models.js';
 import { BurgerSchema, IngredientSchema } from './../burger-builder/models.js';
 
 const OrderSchema = mongoose.Schema({
-  customer: UserSchema,
-  burger: BurgerSchema,
+  customer: {
+    type: UserSchema,
+    excludeIndexes: true,
+  },
+  burger: {
+    type: BurgerSchema,
+    excludeIndexes: true
+  },
   price: {
     type: Number,
     required: true,
@@ -14,8 +20,14 @@ const OrderSchema = mongoose.Schema({
     type: String,
     required: true
   },
-  extraIngredients: [IngredientSchema],
-  excludeIngredinets: [IngredientSchema]
+  extraIngredients: {
+    type:[IngredientSchema],
+    excludeIndexes: true
+  },
+  excludeIngredienets: {
+    type: [IngredientSchema],
+    excludeIndexes: true
+  }
 }, {
   timestamps: true,
 });

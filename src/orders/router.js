@@ -6,7 +6,7 @@ import { Orders } from './models.js'
 const router = express.Router()
 
 const getOrders = async (req, res) => {
-  return req.json(await Orders.find().sort({ createdAt: -1 }));
+  return res.json(await Orders.find().sort({ createdAt: -1 }));
 }
 
 const saveOrder = async (req, res) => {
@@ -24,7 +24,8 @@ const saveOrder = async (req, res) => {
       address: address,
       extraIngredients: extraIngredients ? extraIngredients : [],
       excludeIngredients: excludeIngredients ? excludeIngredients : [],
-      price: 100
+      price: extraIngredients.reduce(
+        (price, ingredient) => ingredient.price + price, burger.price),
     })
     return res.json(order);
   }
