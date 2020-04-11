@@ -6,7 +6,7 @@ import { Orders } from './models.js'
 const router = express.Router()
 
 const getOrders = async (req, res) => {
-  return res.json(await Orders.find().sort({ createdAt: -1 }));
+  return res.json(await Orders.find({ 'customer._id': req.user._id }).sort({ createdAt: -1 }));
 }
 
 const saveOrder = async (req, res) => {
