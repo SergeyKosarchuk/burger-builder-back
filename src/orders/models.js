@@ -24,7 +24,7 @@ const OrderSchema = mongoose.Schema({
     type:[IngredientSchema],
     excludeIndexes: true
   },
-  excludeIngredienets: {
+  excludeIngredients: {
     type: [IngredientSchema],
     excludeIndexes: true
   }
