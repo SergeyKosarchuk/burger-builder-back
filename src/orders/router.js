@@ -1,12 +1,27 @@
 import express from 'express';
 import passport from 'passport';
+import moment from 'moment';
 
 import { Orders } from './models.js'
 
 const router = express.Router()
 
 const getOrders = async (req, res) => {
-  return res.json(await Orders.find({ 'customer._id': req.user._id }).sort({ createdAt: -1 }));
+  const queryParams = { 'customer._id': req.user._id };
+
+  if (req.query.createdAt__gte){
+    const createdAt__gte = moment.utc(req.query.createdAt__gte, moment.ISO_8601);
+
+    if (createdAt__gte.isValid()) {
+      queryParams.createdAt = { $gte: createdAt__gte }
+    }
+    else {
+      return res.status(400).json({error: 'Invalidate date format' });
+    }
+  }
+
+  const orders = await Orders.find(queryParams).sort({ createdAt: -1 }).limit(20);
+  return res.json(orders);
 }
 
 const saveOrder = async (req, res) => {
